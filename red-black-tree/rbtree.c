@@ -1,6 +1,5 @@
 #include "rbtree.h"
 
-#include <stdlib.h>
 #include <string.h>
 
 /* Definition of uintptr_t */
