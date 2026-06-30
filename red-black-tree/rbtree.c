@@ -112,7 +112,7 @@ void rbtree_destroy(rbtree_t* tree) {
             if (node->rt) { node = node->rt; continue; }
 
             if (tree->del)
-                tree->del(node->data);
+                tree->del(node->key, node->data);
 
             parent = rbti_parent(node);
             if (parent) {
@@ -311,7 +311,7 @@ int rbtree_delete(rbtree_t* tree, const void* key) {
         rbti_node_t* child = node->lt ? node->lt : node->rt;
 
         if (tree->del)
-            tree->del(node->data);
+            tree->del(node->key, node->data);
 
         node->key  = child->key ;
         node->data = child->data;
@@ -325,7 +325,7 @@ int rbtree_delete(rbtree_t* tree, const void* key) {
     /* HERE: node 0 children */
 
     if (tree->del)
-        tree->del(node->data);
+        tree->del(node->key, node->data);
 
     color = rbti_color(node);
     parent = rbti_parent(node);

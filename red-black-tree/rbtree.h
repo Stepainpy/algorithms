@@ -25,7 +25,7 @@ typedef struct rbtree_t rbtree_t;
 
 typedef void* (*rbtree_alloc_t)(void* ud, void* ptr);
 typedef int (*rbtree_compare_t)(const void* lhs, const void* rhs);
-typedef void (*rbtree_delete_t)(void* data);
+typedef void (*rbtree_delete_t)(const void* key, void* data);
 
 rbtree_t* rbtree_create(
     rbtree_alloc_t alloc_func, void* alloc_userdata,
