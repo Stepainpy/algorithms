@@ -84,8 +84,8 @@ static void rbti_set_parent(rbti_node_t* node, rbti_node_t* parent) {
 /* Tree creation and destruction */
 
 rbtree_t* rbtree_create(
-    rbtree_alloc_t alloc, void* udata,
-    rbtree_compare_t cmp, rbtree_delete_t del
+    rbtree_compare_t cmp, rbtree_delete_t del,
+    rbtree_alloc_t alloc, void* udata
 ) {
     rbtree_t* tree;
 
@@ -130,7 +130,7 @@ void rbtree_destroy(rbtree_t* tree) {
 
 /* Searching */
 
-void* rbtree_search(rbtree_t* tree, const void* key) {
+void* rbtree_search(const rbtree_t* tree, const void* key) {
     rbti_node_t* node;
 
     if (!tree || !tree->root) return NULL;
@@ -441,7 +441,7 @@ fixup:
 /* Output extension */
 
 static int rbti_put_node(
-    const rbtree_io_t* io, rbti_node_t* node,
+    const rbtree_io_t* io, const rbti_node_t* node,
     size_t level, int is_left, int use_ansi_colors
 ) {
     static char prefix[1024] = {0}; int clr;
@@ -500,11 +500,7 @@ static int rbti_put_node(
     return RBT_OKEY;
 }
 
-int rbtree_output(rbtree_t* tree, const rbtree_io_t* io, int use_ansi_colors) {
+int rbtree_output(const rbtree_t* tree, const rbtree_io_t* io, int use_ansi_colors) {
     if (!tree || !io || !io->put_str) return RBT_FAIL;
-
-    if (io->put_str(io->ud, "ROOT\n", 5)) return RBT_FAIL;
-    if (tree->root)
-        if (io->put_str(io->ud, "|\n", 2)) return RBT_FAIL;
     return rbti_put_node(io, tree->root, 0, 1, use_ansi_colors);
 }

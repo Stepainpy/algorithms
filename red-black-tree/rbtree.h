@@ -28,13 +28,15 @@ typedef int (*rbtree_compare_t)(const void* lhs, const void* rhs);
 typedef void (*rbtree_delete_t)(const void* key, void* data);
 
 rbtree_t* rbtree_create(
-    rbtree_alloc_t alloc_func, void* alloc_userdata,
-    rbtree_compare_t cmp_func, rbtree_delete_t del_func /* Nullable */
+    rbtree_compare_t cmp_func,
+    rbtree_delete_t  del_func, /* optional */
+    rbtree_alloc_t alloc_func,
+    void* alloc_userdata
 );
 
-int   rbtree_insert(rbtree_t* tree, const void* key, void* data);
-void* rbtree_search(rbtree_t* tree, const void* key);
-int   rbtree_delete(rbtree_t* tree, const void* key);
+int   rbtree_insert(      rbtree_t* tree, const void* key, void* data);
+void* rbtree_search(const rbtree_t* tree, const void* key            );
+int   rbtree_delete(      rbtree_t* tree, const void* key            );
 
 void rbtree_destroy(rbtree_t* tree);
 
@@ -42,11 +44,15 @@ void rbtree_destroy(rbtree_t* tree);
 
 typedef struct {
     int (*put_str)(void* ud, const char* str, size_t size);
-    int (*put_key)(void* ud, const void* key); /* Nullable */
-    int (*put_dat)(void* ud, const void* dat); /* Nullable */
+    int (*put_key)(void* ud, const void* key); /* optional */
+    int (*put_dat)(void* ud, const void* dat); /* optional */
     void* ud;
 } rbtree_io_t;
 
-int rbtree_output(rbtree_t* tree, const rbtree_io_t* io, int use_ansi_colors);
+int rbtree_output(
+    const rbtree_t* tree,
+    const rbtree_io_t* io,
+    int use_ansi_colors
+);
 
 #endif /* RED_BLACK_TREE_H */
