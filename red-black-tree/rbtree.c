@@ -281,7 +281,8 @@ fixup:
 int rbtree_delete(rbtree_t* tree, const void* key) {
     rbti_node_t *node, *parent, *sibling; int color;
 
-    if (!tree || !tree->root) return RBT_FAIL;
+    if (!tree) return RBT_FAIL;
+    if (!tree->root) return RBT_OKEY;
 
     node = tree->root;
     while (1) {
@@ -292,7 +293,7 @@ int rbtree_delete(rbtree_t* tree, const void* key) {
         if (cmp < 0 && node->lt) { node = node->lt; continue; }
         if (cmp > 0 && node->rt) { node = node->rt; continue; }
 
-        return RBT_FAIL;
+        return RBT_OKEY;
     }
 
     /* HERE: node may 2, 1 or 0 children */

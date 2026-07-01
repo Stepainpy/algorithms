@@ -1,5 +1,7 @@
 /* Red-black tree
  *
+ * Return value: 0 upon success, nonzero otherwise
+ *
  * Allocator restrictions:
  *   If passed NULL, returns pointer to memory with size at least RBTREE_NODE_SIZE
  *   If passed not NULL, free memory by passed pointer
