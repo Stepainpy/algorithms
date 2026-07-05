@@ -1,5 +1,5 @@
-#ifndef FISHER_YATES_SHUFFLE
-#define FISHER_YATES_SHUFFLE
+#ifndef FISHER_YATES_SHUFFLE_H
+#define FISHER_YATES_SHUFFLE_H
 
 #include <stddef.h>
 
@@ -16,4 +16,4 @@ void fyshuffle_copy(
     void* range_ud /* in range [0, bound] */
 );
 
-#endif /* FISHER_YATES_SHUFFLE */
+#endif /* FISHER_YATES_SHUFFLE_H */
