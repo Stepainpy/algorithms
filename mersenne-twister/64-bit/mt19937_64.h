@@ -10,7 +10,14 @@
 typedef unsigned long uint64_t;
 #  else
 #    define UINT64_C(lit) lit ## ull
+#    if __GNUC__
+#      pragma GCC diagnostic push
+#      pragma GCC diagnostic ignored "-Wlong-long"
+#    endif
 typedef unsigned long long uint64_t;
+#    if __GNUC__
+#      pragma GCC diagnostic pop
+#    endif
 #  endif
 #endif
 

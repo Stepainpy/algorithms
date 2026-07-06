@@ -10,7 +10,7 @@ typedef   signed long ptrdiff_t;
 #  else
 #    if __GNUC__
 #      pragma GCC diagnostic push
-#      pragma GCC diagnostic ignored -Wlong-long
+#      pragma GCC diagnostic ignored "-Wlong-long"
 #    endif
 typedef unsigned long long uintptr_t;
 typedef   signed long long ptrdiff_t;
