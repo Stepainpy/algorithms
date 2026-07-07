@@ -5,6 +5,7 @@
 - [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle)
 - [Memory pool](https://en.wikipedia.org/wiki/Memory_pool)
 - [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
+- [Uniform integer distribution](https://arxiv.org/pdf/1805.10941)
 
 ## Data structures
 
