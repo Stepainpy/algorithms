@@ -75,7 +75,7 @@ mtw_t mt19937_generate(mt19937_t* e) {
     return x;
 }
 
-int mt19937_discard(mt19937_t* e, mtw_t count) {
+int mt19937_discard(mt19937_t* e, size_t count) {
     if (!e) return 1;
     while (count > MT_N - e->pos) {
         count -= MT_N - e->pos;

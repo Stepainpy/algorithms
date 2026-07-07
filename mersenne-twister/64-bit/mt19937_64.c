@@ -26,11 +26,6 @@ typedef CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 #define MT_B MTW_C(0x71d67fffeda60000)
 #define MT_C MTW_C(0xfff7eee000000000)
 
-#if __GNUC__
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wlong-long"
-#endif
-
 static void mt19937_64i_step(mt19937_64_t* e) {
     mtw_t i;
 
@@ -80,7 +75,7 @@ mtw_t mt19937_64_generate(mt19937_64_t* e) {
     return x;
 }
 
-int mt19937_64_discard(mt19937_64_t* e, mtw_t count) {
+int mt19937_64_discard(mt19937_64_t* e, size_t count) {
     if (!e) return 1;
     while (count > MT_N - e->pos) {
         count -= MT_N - e->pos;
@@ -89,7 +84,3 @@ int mt19937_64_discard(mt19937_64_t* e, mtw_t count) {
     e->pos += count;
     return 0;
 }
-
-#if __GNUC__
-#  pragma GCC diagnostic pop
-#endif

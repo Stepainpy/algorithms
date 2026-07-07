@@ -1,24 +1,6 @@
 #include "mempool.h"
 
-#if __STDC_VERSION__ >= 199901L
-#  include <stdint.h>
-#else
-#  include <limits.h>
-#  if ULONG_MAX > 0xFFFFFFFFul
-typedef unsigned long uintptr_t;
-typedef   signed long ptrdiff_t;
-#  else
-#    if __GNUC__
-#      pragma GCC diagnostic push
-#      pragma GCC diagnostic ignored "-Wlong-long"
-#    endif
-typedef unsigned long long uintptr_t;
-typedef   signed long long ptrdiff_t;
-#    if __GNUC__
-#      pragma GCC diagnostic pop
-#    endif
-#  endif
-#endif
+#include <stdint.h>
 
 typedef struct mpi_node_t {
     struct mpi_node_t* next;

@@ -1,26 +1,7 @@
 #include "rbtree.h"
 
+#include <stdint.h>
 #include <string.h>
-
-/* Definition of uintptr_t */
-
-#if __STDC_VERSION__ >= 199901L
-#  include <stdint.h>
-#else
-#  include <limits.h>
-#  if ULONG_MAX > 0xFFFFFFFFul
-typedef unsigned long uintptr_t;
-#  else
-#    if __GNUC__
-#      pragma GCC diagnostic push
-#      pragma GCC diagnostic ignored "-Wlong-long"
-#    endif
-typedef unsigned long long uintptr_t;
-#    if __GNUC__
-#      pragma GCC diagnostic pop
-#    endif
-#  endif
-#endif
 
 /* Definition of macro-constants */
 
