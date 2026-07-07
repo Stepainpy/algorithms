@@ -1,5 +1,7 @@
 # Algorithms and data structures
 
+Implementation on C89 (ANSI C), except use header `stdint.h`.
+
 ## Algorithms
 
 - [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle)
