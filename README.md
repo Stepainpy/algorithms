@@ -8,6 +8,7 @@ Implementation on C89 (ANSI C), except use header `stdint.h`.
 - [Memory pool](https://en.wikipedia.org/wiki/Memory_pool)
 - [Mersenne Twister](https://en.wikipedia.org/wiki/Mersenne_Twister)
 - [Uniform integer distribution](https://arxiv.org/pdf/1805.10941)
+-  Uniform real distribution
 
 ## Data structures
 
