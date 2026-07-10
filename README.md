@@ -14,3 +14,4 @@ Implementation on C89 (ANSI C), except use header `stdint.h`.
 
 - [Red-black tree](https://en.wikipedia.org/wiki/Red–black_tree)
 - [AVL tree](https://en.wikipedia.org/wiki/AVL_tree)
+- [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter)
