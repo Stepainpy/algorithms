@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-float  urealdist_get_32(float  min, float  max, uint32_t (*generate)(void*), void* engine);
-double urealdist_get_64(double min, double max, uint64_t (*generate)(void*), void* engine);
+float  urealdistr_get_32(float  min, float  max, uint32_t (*generate)(void*), void* engine);
+double urealdistr_get_64(double min, double max, uint64_t (*generate)(void*), void* engine);
 
 #endif /* UNIFORM_REAL_DISTRIBUTION */
