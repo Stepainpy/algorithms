@@ -1,7 +1,7 @@
 #include "mt19937_64.h"
 
-#define CONCAT_(x, y) x ## y
-#define CONCAT(x, y) CONCAT_(x, y)
+#define _CONCAT(x, y)         x##y
+#define  CONCAT(x, y) _CONCAT(x, y)
 
 #define MT_W 64
 #define MT_N 312
