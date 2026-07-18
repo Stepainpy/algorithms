@@ -1,6 +1,6 @@
-#include "uintdist.h"
+#include "uintdistr.h"
 
-uint32_t uintdist_get_32(uint32_t min, uint32_t max, uint32_t (*gen)(void*), void* eng) {
+uint32_t uintdistr_get_32(uint32_t min, uint32_t max, uint32_t (*gen)(void*), void* eng) {
     const uint32_t range = max - min + 1;
 
     uint64_t product = (uint64_t)gen(eng) * (uint64_t)range;
@@ -47,7 +47,7 @@ static uint128_t uidi_mul(uint64_t x, uint64_t y) {
     return out;
 }
 
-uint64_t uintdist_get_64(uint64_t min, uint64_t max, uint64_t (*gen)(void*), void* eng) {
+uint64_t uintdistr_get_64(uint64_t min, uint64_t max, uint64_t (*gen)(void*), void* eng) {
     const uint64_t range = max - min + 1;
 
     uint128_t product = uidi_mul(gen(eng), range);
