@@ -10,23 +10,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "32-bit/mt19937.h"
+#include "32-bit/mt19937_32.h"
 #include "64-bit/mt19937_64.h"
 
-static mt19937_t    eng32[1];
+static mt19937_32_t eng32[1];
 static mt19937_64_t eng64[1];
 
 int test_discard(void) {
     uint32_t x32, e32 = UINT32_C(4123659995);
     uint64_t x64, e64 = UINT64_C(9981545732273789042);
 
-    if (mt19937_seed   (eng32, 5489)) return 1;
+    if (mt19937_32_seed(eng32, 5489)) return 1;
     if (mt19937_64_seed(eng64, 5489)) return 1;
 
-    if (mt19937_discard   (eng32, 9999)) return 1;
+    if (mt19937_32_discard(eng32, 9999)) return 1;
     if (mt19937_64_discard(eng64, 9999)) return 1;
 
-    x32 = mt19937_generate   (eng32);
+    x32 = mt19937_32_generate(eng32);
     x64 = mt19937_64_generate(eng64);
 
     if (x32 != e32) fprintf(stderr, "Generate 10000th 32 bit: expect %.u, but got %.u\n", e32, x32);
@@ -64,11 +64,11 @@ int test_seed_array(void) {
     for (i = 0; i < sdsz32; i++) if (!fscanf(tvfile32,  "%u", seeds32 + i)) error_msg("Couldn't read 32 bit seed");
     for (i = 0; i < sdsz64; i++) if (!fscanf(tvfile64, "%lu", seeds64 + i)) error_msg("Couldn't read 64 bit seed");
 
-    if (mt19937_seed_array   (eng32, seeds32, sdsz32)) goto cleanup;
+    if (mt19937_32_seed_array(eng32, seeds32, sdsz32)) goto cleanup;
     if (mt19937_64_seed_array(eng64, seeds64, sdsz64)) goto cleanup;
 
     for (i = 1, n32 = p32 = 0; fscanf(tvfile32, "%u", &e32) == 1; i++) {
-        uint32_t x32 = mt19937_generate(eng32);
+        uint32_t x32 = mt19937_32_generate(eng32);
         if (x32 != e32) fprintf(stderr, "Generate #%i 32 bit: expect %u, but got %u\n", i, e32, x32);
         n32++; p32 += x32 == e32;
         if (n32 - p32 >= 10) { fputs("Too many errors\n", stderr); break; }

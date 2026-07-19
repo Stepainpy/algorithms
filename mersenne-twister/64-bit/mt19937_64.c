@@ -66,7 +66,7 @@ int mt19937_64_seed(mt19937_64_t* e, mtw_t s) {
     return 0;
 }
 
-int mt19937_64_seed_array(mt19937_64_t* e, const uint64_t ss[], size_t c) {
+int mt19937_64_seed_array(mt19937_64_t* e, const mtw_t ss[], size_t c) {
     mtw_t i, j; size_t k;
     if (!e || !ss || !c) return 1;
     mt19937_64_seed(e, MTW_C(19650218));

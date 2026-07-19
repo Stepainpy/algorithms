@@ -1,4 +1,4 @@
-#include "mt19937.h"
+#include "mt19937_32.h"
 
 #define _CONCAT(x, y)         x##y
 #define  CONCAT(x, y) _CONCAT(x, y)
@@ -29,7 +29,7 @@ typedef CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 #define MT_B MTW_C(0x9d2c5680)
 #define MT_C MTW_C(0xefc60000)
 
-static void mt19937i_step(mt19937_t* e) {
+static void mt19937_32i_step(mt19937_32_t* e) {
     static const mtw_t chA[2] = {0, MT_A};
     mtw_t i;
 
@@ -51,7 +51,7 @@ static void mt19937i_step(mt19937_t* e) {
     e->pos = 0;
 }
 
-int mt19937_seed(mt19937_t* e, mtw_t s) {
+int mt19937_32_seed(mt19937_32_t* e, mtw_t s) {
     mtw_t i; if (!e) return 1;
 
     e->state[0] = s;
@@ -66,10 +66,10 @@ int mt19937_seed(mt19937_t* e, mtw_t s) {
     return 0;
 }
 
-int mt19937_seed_array(mt19937_t* e, const mtw_t ss[], size_t c) {
+int mt19937_32_seed_array(mt19937_32_t* e, const mtw_t ss[], size_t c) {
     mtw_t i, j; size_t k;
     if (!e || !ss || !c) return 1;
-    mt19937_seed(e, MTW_C(19650218));
+    mt19937_32_seed(e, MTW_C(19650218));
 
     i = 1; j = 0;
     k = MT_N > c ? MT_N : c;
@@ -96,9 +96,9 @@ int mt19937_seed_array(mt19937_t* e, const mtw_t ss[], size_t c) {
     return 0;
 }
 
-mtw_t mt19937_generate(mt19937_t* e) {
+mtw_t mt19937_32_generate(mt19937_32_t* e) {
     mtw_t x; if (!e) return 1;
-    if (e->pos >= MT_N) mt19937i_step(e);
+    if (e->pos >= MT_N) mt19937_32i_step(e);
 
     x = e->state[e->pos++];
     x ^= (x >> MT_U) & MT_D;
@@ -109,11 +109,11 @@ mtw_t mt19937_generate(mt19937_t* e) {
     return x;
 }
 
-int mt19937_discard(mt19937_t* e, size_t count) {
+int mt19937_32_discard(mt19937_32_t* e, size_t count) {
     if (!e) return 1;
     while (count > MT_N - e->pos) {
         count -= MT_N - e->pos;
-        mt19937i_step(e);
+        mt19937_32i_step(e);
     }
     e->pos += count;
     return 0;
