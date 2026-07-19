@@ -22,26 +22,30 @@ typedef CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 #define MT_A MTW_C(0x9908b0df)
 #define MT_F MTW_C(0x6c078965)
 
+#define MT_P MTW_C(0x0019660d)
+#define MT_Q MTW_C(0x5d588b65)
+
 #define MT_D MTW_C(0xffffffff)
 #define MT_B MTW_C(0x9d2c5680)
 #define MT_C MTW_C(0xefc60000)
 
 static void mt19937i_step(mt19937_t* e) {
+    static const mtw_t chA[2] = {0, MT_A};
     mtw_t i;
 
     for (i = 0; i < MT_N - MT_M; i++) {
         mtw_t x = (e->state[i] & MT_UPPER) | (e->state[i + 1] & MT_LOWER);
-        e->state[i] = e->state[i + MT_M] ^ (x >> 1) ^ (x & 1 ? MT_A : 0);
+        e->state[i] = e->state[i + MT_M] ^ (x >> 1) ^ chA[x & 1];
     }
 
     for (i = MT_N - MT_M; i < MT_N - 1; i++) {
         mtw_t x = (e->state[i] & MT_UPPER) | (e->state[i + 1] & MT_LOWER);
-        e->state[i] = e->state[i + (MT_M - MT_N)] ^ (x >> 1) ^ (x & 1 ? MT_A : 0);
+        e->state[i] = e->state[i + MT_M - MT_N] ^ (x >> 1) ^ chA[x & 1];
     }
 
     {
         mtw_t x = (e->state[MT_N - 1] & MT_UPPER) | (e->state[0] & MT_LOWER);
-        e->state[MT_N - 1] = e->state[MT_M - 1] ^ (x >> 1) ^ (x & 1 ? MT_A : 0);
+        e->state[MT_N - 1] = e->state[MT_M - 1] ^ (x >> 1) ^ chA[x & 1];
     }
 
     e->pos = 0;
@@ -58,6 +62,36 @@ int mt19937_seed(mt19937_t* e, mtw_t s) {
         e->state[i] = x;
     }
     e->pos = MT_N;
+
+    return 0;
+}
+
+int mt19937_seed_array(mt19937_t* e, const mtw_t ss[], size_t c) {
+    mtw_t i, j; size_t k;
+    if (!e || !ss || !c) return 1;
+    mt19937_seed(e, MTW_C(19650218));
+
+    i = 1; j = 0;
+    k = MT_N > c ? MT_N : c;
+
+    while (k --> 0) {
+        mtw_t x = e->state[i - 1];
+        x = (x ^ (x >> (MT_W - 2))) * MT_P;
+        e->state[i] = (e->state[i] ^ x) + ss[j] + j;
+
+        if (++i >= MT_N) { e->state[0] = e->state[MT_N - 1]; i = 1; }
+        if (++j >= c) j = 0;
+    }
+
+    for (k = MT_N - 1; k --> 0;) {
+        mtw_t x = e->state[i - 1];
+        x = (x ^ (x >> (MT_W - 2))) * MT_Q;
+        e->state[i] = (e->state[i] ^ x) - i;
+
+        if (++i >= MT_N) { e->state[0] = e->state[MT_N - 1]; i = 1; }
+    }
+
+    e->state[0] = MTW_C(1) << (MT_W - 1);
 
     return 0;
 }

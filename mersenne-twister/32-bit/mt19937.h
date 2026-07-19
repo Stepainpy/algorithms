@@ -9,6 +9,7 @@ typedef struct mt19937_t {
 } mt19937_t;
 
 int mt19937_seed(mt19937_t* engine, uint32_t seed);
+int mt19937_seed_array(mt19937_t* engine, const uint32_t seeds[], size_t count);
 uint32_t mt19937_generate(mt19937_t* engine);
 int mt19937_discard(mt19937_t* engine, size_t count);
 
