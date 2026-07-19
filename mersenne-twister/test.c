@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 #include "32-bit/mt19937_32.h"
 #include "64-bit/mt19937_64.h"
@@ -33,26 +34,28 @@ int test_discard(void) {
     tvfile64 = fopen("64-bit/test-discard-vector.txt", "r");
     if (!tvfile64) error_msg("Couldn't open 64 bit test discard vector");
 
-    if (!fscanf(tvfile32,  "%u", &seed32)) error_msg("Couldn't read 32 bit seed");
-    if (!fscanf(tvfile64, "%lu", &seed64)) error_msg("Couldn't read 64 bit seed");
+    if (!fscanf(tvfile32, "%"SCNu32, &seed32)) error_msg("Couldn't read 32 bit seed");
+    if (!fscanf(tvfile64, "%"SCNu64, &seed64)) error_msg("Couldn't read 64 bit seed");
 
     if (mt19937_32_seed(eng32, seed32)) goto cleanup;
     if (mt19937_64_seed(eng64, seed64)) goto cleanup;
 
-    if (!fscanf(tvfile32, "%lu", &skip32)) error_msg("Couldn't read 32 bit discard");
-    if (!fscanf(tvfile64, "%lu", &skip64)) error_msg("Couldn't read 64 bit discard");
+    if (!fscanf(tvfile32, "%"SCNu64, &skip32)) error_msg("Couldn't read 32 bit discard");
+    if (!fscanf(tvfile64, "%"SCNu64, &skip64)) error_msg("Couldn't read 64 bit discard");
 
     if (mt19937_32_discard(eng32, skip32)) goto cleanup;
     if (mt19937_64_discard(eng64, skip64)) goto cleanup;
 
-    if (!fscanf(tvfile32,  "%u", &e32)) error_msg("Couldn't read 32 bit expected value");
-    if (!fscanf(tvfile64, "%lu", &e64)) error_msg("Couldn't read 64 bit expected value");
+    if (!fscanf(tvfile32, "%"SCNu32, &e32)) error_msg("Couldn't read 32 bit expected value");
+    if (!fscanf(tvfile64, "%"SCNu64, &e64)) error_msg("Couldn't read 64 bit expected value");
 
     x32 = mt19937_32_generate(eng32);
     x64 = mt19937_64_generate(eng64);
 
-    if (x32 != e32) fprintf(stderr, "Generate %luth 32 bit: expect %.u, but got %.u\n", skip32 + 1, e32, x32);
-    if (x64 != e64) fprintf(stderr, "Generate %luth 64 bit: expect %lu, but got %lu\n", skip64 + 1, e64, x64);
+    if (x32 != e32) fprintf(stderr,
+        "Generate %"PRIu64"th 32 bit: expect %"PRIu32", but got %"PRIu32"\n", skip32 + 1, e32, x32);
+    if (x64 != e64) fprintf(stderr,
+        "Generate %"PRIu64"th 64 bit: expect %"PRIu64", but got %"PRIu64"\n", skip64 + 1, e64, x64);
 
 cleanup:
     if (tvfile32) fclose(tvfile32);
@@ -81,22 +84,26 @@ int test_seed_array(void) {
     seeds64 = malloc(sizeof *seeds64 * sdsz64);
     if (!seeds64) error_msg("Couldn't allocate memory for 64 bit seeds");
 
-    for (i = 0; i < sdsz32; i++) if (!fscanf(tvfile32,  "%u", seeds32 + i)) error_msg("Couldn't read 32 bit seed");
-    for (i = 0; i < sdsz64; i++) if (!fscanf(tvfile64, "%lu", seeds64 + i)) error_msg("Couldn't read 64 bit seed");
+    for (i = 0; i < sdsz32; i++)
+        if (!fscanf(tvfile32, "%"SCNu32, seeds32 + i)) error_msg("Couldn't read 32 bit seed");
+    for (i = 0; i < sdsz64; i++)
+        if (!fscanf(tvfile64, "%"SCNu64, seeds64 + i)) error_msg("Couldn't read 64 bit seed");
 
     if (mt19937_32_seed_array(eng32, seeds32, sdsz32)) goto cleanup;
     if (mt19937_64_seed_array(eng64, seeds64, sdsz64)) goto cleanup;
 
-    for (i = 1, n32 = p32 = 0; fscanf(tvfile32, "%u", &e32) == 1; i++) {
+    for (i = 1, n32 = p32 = 0; fscanf(tvfile32, "%"SCNu32, &e32) == 1; i++) {
         uint32_t x32 = mt19937_32_generate(eng32);
-        if (x32 != e32) fprintf(stderr, "Generate #%i 32 bit: expect %u, but got %u\n", i, e32, x32);
+        if (x32 != e32) fprintf(stderr,
+            "Generate #%i 32 bit: expect %"PRIu32", but got %"PRIu32"\n", i, e32, x32);
         n32++; p32 += x32 == e32;
         if (n32 - p32 >= 10) { fputs("Too many errors\n", stderr); break; }
     }
 
-    for (i = 1, n64 = p64 = 0; fscanf(tvfile64, "%lu", &e64) == 1; i++) {
+    for (i = 1, n64 = p64 = 0; fscanf(tvfile64, "%"SCNu64, &e64) == 1; i++) {
         uint64_t x64 = mt19937_64_generate(eng64);
-        if (x64 != e64) fprintf(stderr, "Generate #%i 64 bit: expect %lu, but got %lu\n", i, e64, x64);
+        if (x64 != e64) fprintf(stderr,
+            "Generate #%i 64 bit: expect %"PRIu64", but got %"PRIu64"\n", i, e64, x64);
         n64++; p64 += x64 == e64;
         if (n64 - p64 >= 10) { fputs("Too many errors\n", stderr); break; }
     }
