@@ -1,8 +1,5 @@
 #include "mt19937_64.h"
 
-#define _CONCAT(x, y)         x##y
-#define  CONCAT(x, y) _CONCAT(x, y)
-
 #define MT_W 64
 #define MT_N 312
 #define MT_M 156
@@ -13,12 +10,6 @@
 #define MT_T 37
 #define MT_L 43
 
-#define MTW_C CONCAT(CONCAT(UINT, MT_W), _C)
-typedef CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
-
-#define MT_UPPER (~MTW_C(0) << MT_R)
-#define MT_LOWER (~MT_UPPER)
-
 #define MT_A MTW_C(0xb5026f5aa96619e9)
 #define MT_F MTW_C(0x5851f42d4c957f2d)
 
@@ -28,6 +19,14 @@ typedef CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 #define MT_D MTW_C(0x5555555555555555)
 #define MT_B MTW_C(0x71d67fffeda60000)
 #define MT_C MTW_C(0xfff7eee000000000)
+
+#define MT_UPPER (~MTW_C(0) << MT_R)
+#define MT_LOWER (~MT_UPPER)
+
+#define _CONCAT(x, y)         x##y
+#define  CONCAT(x, y) _CONCAT(x, y)
+#define MTW_C CONCAT(CONCAT(UINT, MT_W), _C)
+typedef       CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 
 static void mt19937_64i_step(mt19937_64_t* e) {
     static const mtw_t chA[2] = {0, MT_A};
