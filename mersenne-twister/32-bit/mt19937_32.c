@@ -28,7 +28,7 @@
 #define MTW_C CONCAT(CONCAT(UINT, MT_W), _C)
 typedef       CONCAT(CONCAT(uint, MT_W), _t) mtw_t;
 
-static void mt19937_32i_step(mt19937_32_t* e) {
+static void mt19937_32i_twist(mt19937_32_t* e) {
     static const mtw_t chA[2] = {0, MT_A};
     mtw_t i;
 
@@ -97,7 +97,7 @@ int mt19937_32_seed_array(mt19937_32_t* e, const mtw_t ss[], size_t c) {
 
 mtw_t mt19937_32_generate(mt19937_32_t* e) {
     mtw_t x; if (!e) return 1;
-    if (e->pos >= MT_N) mt19937_32i_step(e);
+    if (e->pos >= MT_N) mt19937_32i_twist(e);
 
     x = e->state[e->pos++];
     x ^= (x >> MT_U) & MT_D;
@@ -112,7 +112,7 @@ int mt19937_32_discard(mt19937_32_t* e, size_t count) {
     if (!e) return 1;
     while (count > MT_N - e->pos) {
         count -= MT_N - e->pos;
-        mt19937_32i_step(e);
+        mt19937_32i_twist(e);
     }
     e->pos += count;
     return 0;
