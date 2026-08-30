@@ -6,6 +6,7 @@ Implementation on C89 (ANSI C), except use header `stdint.h`.
 
 - [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher–Yates_shuffle)
 - [Memory pool](https://en.wikipedia.org/wiki/Memory_pool)
+- [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
 
 ## Data structures
 
