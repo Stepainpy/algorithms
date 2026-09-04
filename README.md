@@ -8,6 +8,7 @@ Implementation on C89 (ANSI C), except use header `stdint.h`.
 - [Fisher-Yates sampling](https://ru.wikipedia.org/wiki/Reservoir_sampling#Отношение_к_тасованию_Фишера-Йетса)
 - [Memory pool](https://en.wikipedia.org/wiki/Memory_pool)
 - [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+- [Shunting yard algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm)
 
 ## Data structures
 
